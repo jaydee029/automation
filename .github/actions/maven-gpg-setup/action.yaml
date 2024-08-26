@@ -16,9 +16,9 @@ runs:
     - name: Make secrets directory
       run: |
        mkdir -p /home/runner/work/secrets
-       echo ${{ inputs.MAVEN_SETTINGS_XML }} > /home/runner/work/secrets/settings.xml
-       echo ${{ inputs.GPG_PASSPHRASE }} > /home/runner/work/secrets/passphrase.file
-       echo ${{ inputs.GPG_KEY_BASE64 }} | base64 --decode > /home/runner/work/secrets/galasa.gpg
+       printf "%s" "${{ inputs.MAVEN_SETTINGS_XML }}" > /home/runner/work/secrets/settings.xml
+       printf "%s" "${{ inputs.GPG_PASSPHRASE }}" > /home/runner/work/secrets/passphrase.file
+       echo "${{ inputs.GPG_KEY_BASE64 }}" | base64 --decode > /home/runner/work/secrets/galasa.gpg
        mkdir -p /home/runner/work/gpg
        chmod 700 /home/runner/work/gpg
        gpg --homedir /home/runner/work/gpg --pinentry-mode loopback --passphrase-file /home/runner/work/secrets/passphrase.file --import /home/runner/work/secrets/galasa.gpg
